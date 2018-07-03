@@ -1,6 +1,5 @@
-package np.com.shitalpandey.smartyatayat.entities;
+package com.sagunpandey.smartyatayat.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,4 +1,4 @@
-package np.com.shitalpandey.smartyatayat.entities;
+package com.sagunpandey.smartyatayat.entities;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -20,7 +20,7 @@ public class BusLog {
     private Integer passengersCount;
 
     @ManyToOne
-    @JoinColumn(name = "checkpoint_info_id", nullable = false)
+    @JoinColumn(name = "checkpoint_info_id")
     private CheckpointInfo checkpointInfo;
 
     private Integer entryType;

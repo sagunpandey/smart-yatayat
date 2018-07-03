@@ -1,4 +1,4 @@
-package np.com.shitalpandey.smartyatayat.entities;
+package com.sagunpandey.smartyatayat.entities;
 
 import javax.persistence.*;
 
@@ -10,7 +10,7 @@ public class Bus {
     private Long busId;
 
     @Column(nullable = false, unique = true)
-    private Long busNumber;
+    private String busNumber;
 
     @Column(nullable = false)
     private Integer totalSeats;
@@ -26,11 +26,11 @@ public class Bus {
         this.busId = busId;
     }
 
-    public Long getBusNumber() {
+    public String getBusNumber() {
         return busNumber;
     }
 
-    public void setBusNumber(Long busNumber) {
+    public void setBusNumber(String busNumber) {
         this.busNumber = busNumber;
     }
 

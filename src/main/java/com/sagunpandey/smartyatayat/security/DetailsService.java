@@ -1,7 +1,7 @@
-package np.com.shitalpandey.smartyatayat.security;
+package com.sagunpandey.smartyatayat.security;
 
-import np.com.shitalpandey.smartyatayat.entities.UserInfo;
-import np.com.shitalpandey.smartyatayat.repositories.UserRepository;
+import com.sagunpandey.smartyatayat.entities.UserInfo;
+import com.sagunpandey.smartyatayat.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;

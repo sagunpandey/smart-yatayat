@@ -1,4 +1,4 @@
-package np.com.shitalpandey.smartyatayat.security;
+package com.sagunpandey.smartyatayat.security;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;

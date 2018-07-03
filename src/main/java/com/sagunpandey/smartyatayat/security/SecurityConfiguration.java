@@ -1,6 +1,6 @@
-package np.com.shitalpandey.smartyatayat.security;
+package com.sagunpandey.smartyatayat.security;
 
-import np.com.shitalpandey.smartyatayat.entities.UserInfo;
+import com.sagunpandey.smartyatayat.entities.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

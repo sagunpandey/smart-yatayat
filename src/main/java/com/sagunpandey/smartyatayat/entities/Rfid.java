@@ -1,4 +1,4 @@
-package np.com.shitalpandey.smartyatayat.entities;
+package com.sagunpandey.smartyatayat.entities;
 
 import javax.persistence.*;
 
