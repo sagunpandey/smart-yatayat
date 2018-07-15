@@ -43,7 +43,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     {
         webSecurity
                 .ignoring()
-                .antMatchers("/user");
+                .antMatchers("/user/login")
+                .antMatchers("/user/create");
     }
 
     @Bean

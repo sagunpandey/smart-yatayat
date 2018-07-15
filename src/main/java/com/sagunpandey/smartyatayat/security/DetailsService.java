@@ -1,7 +1,7 @@
 package com.sagunpandey.smartyatayat.security;
 
+import com.sagunpandey.smartyatayat.dao.userinfo.UserInfoRepository;
 import com.sagunpandey.smartyatayat.entities.UserInfo;
-import com.sagunpandey.smartyatayat.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class DetailsService implements UserDetailsService {
 
     @Autowired
-    UserRepository users;
+    UserInfoRepository users;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

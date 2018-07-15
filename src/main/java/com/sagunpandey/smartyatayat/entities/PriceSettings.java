@@ -9,11 +9,11 @@ public class PriceSettings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long priceSettingsId;
 
-    @Column(nullable = false)
-    private Integer checkpointRate;
+    @Column(nullable = false, unique = true)
+    private String settingName;
 
-    @Column(nullable = false)
-    private Integer minimumBalanceAllowed;
+    @Column
+    private String settingValue;
 
     public Long getPriceSettingsId() {
         return priceSettingsId;
@@ -23,19 +23,19 @@ public class PriceSettings {
         this.priceSettingsId = priceSettingsId;
     }
 
-    public Integer getCheckpointRate() {
-        return checkpointRate;
+    public String getSettingName() {
+        return settingName;
     }
 
-    public void setCheckpointRate(Integer checkpointRate) {
-        this.checkpointRate = checkpointRate;
+    public void setSettingName(String settingName) {
+        this.settingName = settingName;
     }
 
-    public Integer getMinimumBalanceAllowed() {
-        return minimumBalanceAllowed;
+    public String getSettingValue() {
+        return settingValue;
     }
 
-    public void setMinimumBalanceAllowed(Integer minimumBalanceAllowed) {
-        this.minimumBalanceAllowed = minimumBalanceAllowed;
+    public void setSettingValue(String settingValue) {
+        this.settingValue = settingValue;
     }
 }
