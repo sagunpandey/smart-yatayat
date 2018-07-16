@@ -1,12 +1,14 @@
 package com.sagunpandey.smartyatayat.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.sagunpandey.smartyatayat.dao.userinfo.UserService;
 import com.sagunpandey.smartyatayat.entities.UserInfo;
 import com.sagunpandey.smartyatayat.exceptions.BadRequestException;
 import com.sagunpandey.smartyatayat.exceptions.LoginException;
 import com.sagunpandey.smartyatayat.exceptions.ResourceNotFoundException;
+import com.sagunpandey.smartyatayat.helpers.GsonExclusionStrategy;
 import com.sagunpandey.smartyatayat.objects.LoginForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -87,7 +89,8 @@ public class UserController {
             UserInfo userInfo = service.findByEmail(username);
 
             if(userInfo != null) {
-                return new Gson().toJson(userInfo);
+                Gson gson = new GsonBuilder().addSerializationExclusionStrategy(new GsonExclusionStrategy()).create();
+                return gson.toJson(userInfo);
             } else {
                 throw new ResourceNotFoundException("User not found");
             }

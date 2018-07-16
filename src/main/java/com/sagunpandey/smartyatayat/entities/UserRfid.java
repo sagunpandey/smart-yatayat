@@ -1,5 +1,8 @@
 package com.sagunpandey.smartyatayat.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sagunpandey.smartyatayat.helpers.Exclude;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,6 +12,8 @@ public class UserRfid {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userRfidId;
 
+    @Exclude
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne
     @JoinColumn(name = "user_info_id", nullable = false)
     private UserInfo userInfo;

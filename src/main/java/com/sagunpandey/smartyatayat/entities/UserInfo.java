@@ -1,10 +1,12 @@
 package com.sagunpandey.smartyatayat.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sagunpandey.smartyatayat.helpers.Exclude;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class UserInfo {
@@ -23,6 +25,7 @@ public class UserInfo {
     @Column(nullable = false)
     private String lastName;
 
+    @Exclude
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
@@ -32,12 +35,14 @@ public class UserInfo {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private Integer role = 2;
 
     @Column(nullable = false)
     private Integer balance = 0;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userInfo")
+    private List<UserRfid> userRfids;
 
     public Long getUserInfoId() {
         return userInfoId;
