@@ -1,16 +1,20 @@
 package com.sagunpandey.smartyatayat.controllers;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.sagunpandey.smartyatayat.dao.userinfo.UserService;
 import com.sagunpandey.smartyatayat.entities.UserInfo;
+import com.sagunpandey.smartyatayat.exceptions.BadRequestException;
 import com.sagunpandey.smartyatayat.exceptions.LoginException;
+import com.sagunpandey.smartyatayat.exceptions.ResourceNotFoundException;
 import com.sagunpandey.smartyatayat.objects.LoginForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Base64;
 
 @RestController
 @RequestMapping("/user")
@@ -54,10 +58,18 @@ public class UserController {
             boolean authorized = encoder.matches(loginForm.getPassword(), userInfo.getPassword());
 
             if(authorized) {
+                Base64.Encoder encoder1 = Base64.getEncoder();
+
                 JsonObject object = new JsonObject();
                 object.addProperty(
                         "token",
-                        encoder.encode(userInfo.getEmail() + ":" + loginForm.getPassword()));
+                        encoder1.encodeToString(
+                                (userInfo.getEmail() + ":" + loginForm.getPassword()).getBytes()
+                        ));
+                object.addProperty(
+                        "username",
+                        loginForm.getUsername()
+                );
                 return object.toString();
             } else {
                 throw new LoginException("Invalid Credentials");
@@ -67,17 +79,20 @@ public class UserController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity getUser(@RequestParam("username") String username) {
+    @GetMapping(
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public String getUser(@RequestParam("username") String username) {
         if(username != null && !username.isEmpty()) {
             UserInfo userInfo = service.findByEmail(username);
 
             if(userInfo != null) {
-                return ResponseEntity.status(HttpStatus.OK).body(userInfo);
+                return new Gson().toJson(userInfo);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User '" + username +"' not found");
+                throw new ResourceNotFoundException("User not found");
             }
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid request");
+
+        throw new BadRequestException("Invalid request");
     }
 }
