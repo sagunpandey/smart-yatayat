@@ -6,7 +6,7 @@ public class BusStatusCheckpointExit {
 
     private String busNumber;
 
-    private Integer totalPassesngers;
+    private Integer totalPassengers;
 
     private String availability;
 
@@ -22,12 +22,12 @@ public class BusStatusCheckpointExit {
         this.busNumber = busNumber;
     }
 
-    public Integer getTotalPassesngers() {
-        return totalPassesngers;
+    public Integer getTotalPassengers() {
+        return totalPassengers;
     }
 
-    public void setTotalPassesngers(Integer totalPassesngers) {
-        this.totalPassesngers = totalPassesngers;
+    public void setTotalPassengers(Integer totalPassengers) {
+        this.totalPassengers = totalPassengers;
     }
 
     public String getAvailability() {

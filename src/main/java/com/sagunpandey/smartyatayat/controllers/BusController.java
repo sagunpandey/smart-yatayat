@@ -58,7 +58,7 @@ public class BusController {
                 availability = "Seats: " + remSeats + " Stands: " + remStands;
             }
 
-            status.setTotalPassesngers(passengerCount);
+            status.setTotalPassengers(passengerCount);
             status.setAvailability(availability);
 
             statuses.add(status);
