@@ -3,8 +3,10 @@ package com.sagunpandey.smartyatayat.controllers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.sagunpandey.smartyatayat.dao.user_rfid.UserRfidService;
 import com.sagunpandey.smartyatayat.dao.userinfo.UserService;
 import com.sagunpandey.smartyatayat.entities.UserInfo;
+import com.sagunpandey.smartyatayat.entities.UserRfid;
 import com.sagunpandey.smartyatayat.exceptions.BadRequestException;
 import com.sagunpandey.smartyatayat.exceptions.LoginException;
 import com.sagunpandey.smartyatayat.exceptions.ResourceNotFoundException;
@@ -12,8 +14,6 @@ import com.sagunpandey.smartyatayat.helpers.GsonExclusionStrategy;
 import com.sagunpandey.smartyatayat.objects.LoginForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Base64;
@@ -23,10 +23,17 @@ import java.util.Base64;
 public class UserController {
 
     private UserService service;
+    private UserRfidService userRfidService;
+
+    private Gson gson;
 
     @Autowired
-    public UserController(UserService service) {
+    public UserController(UserService service, UserRfidService userRfidService) {
         this.service = service;
+        this.userRfidService = userRfidService;
+
+        gson = new GsonBuilder()
+                .addSerializationExclusionStrategy(new GsonExclusionStrategy()).create();
     }
 
     @PostMapping(
@@ -34,13 +41,42 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<UserInfo> createStudent(@RequestBody UserInfo user) {
+    public String createUser(@RequestBody UserInfo user) {
 
         user.setRole(2);
         user.setBalance(0);
+        user.setPassword(UserInfo.PASSWORD_ENCODER.encode(user.getPassword()));
 
-        service.save(user);
-        return ResponseEntity.ok(user);
+        return gson.toJson(service.save(user));
+    }
+
+    @PutMapping(
+            value = "/update",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public String updateUser(@RequestBody UserInfo user) {
+        Long id = user.getUserInfoId();
+
+        if(id == null) {
+            throw new BadRequestException("User update failed");
+        }
+
+        UserInfo u = service.findById(id);
+        if(u == null) {
+            throw new ResourceNotFoundException("User not found");
+        }
+
+        u.setFirstName(user.getFirstName());
+        u.setMiddleName(user.getMiddleName());
+        u.setLastName(user.getLastName());
+        u.setEmail(user.getEmail());
+        u.setPhone(user.getPhone());
+        u.setBalance(user.getBalance());
+        if(user.getPassword() != null && !user.getPassword().isEmpty())
+            u.setPassword(UserInfo.PASSWORD_ENCODER.encode(user.getPassword()));
+
+        return gson.toJson(service.save(u));
     }
 
     @PostMapping(
@@ -56,8 +92,7 @@ public class UserController {
                 throw new LoginException("User not found");
             }
 
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            boolean authorized = encoder.matches(loginForm.getPassword(), userInfo.getPassword());
+            boolean authorized = UserInfo.PASSWORD_ENCODER.matches(loginForm.getPassword(), userInfo.getPassword());
 
             if(authorized) {
                 Base64.Encoder encoder1 = Base64.getEncoder();
@@ -89,7 +124,6 @@ public class UserController {
             UserInfo userInfo = service.findByEmail(username);
 
             if(userInfo != null) {
-                Gson gson = new GsonBuilder().addSerializationExclusionStrategy(new GsonExclusionStrategy()).create();
                 return gson.toJson(userInfo);
             } else {
                 throw new ResourceNotFoundException("User not found");
@@ -97,5 +131,48 @@ public class UserController {
         }
 
         throw new BadRequestException("Invalid request");
+    }
+
+    @PostMapping(
+            value = "/card/create",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public String addCard(@RequestBody UserRfid userRfid) {
+        if(userRfid == null ||
+                userRfid.getUserInfo() == null ||
+                userRfid.getUserInfo().getUserInfoId() == null ||
+                userRfid.getRfid() == null) {
+            throw new BadRequestException("Invalid request");
+        }
+
+        userRfid.setActive(0);
+
+        userRfid = userRfidService.save(userRfid);
+
+        return gson.toJson(userRfid);
+    }
+
+    @PutMapping(
+            value = "/card/update",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public String updateCard(@RequestBody UserRfid userRfid) {
+        if(userRfid == null || userRfid.getUserRfidId() == null || userRfid.getRfid() == null) {
+            throw new BadRequestException("Invalid Request");
+        }
+
+        UserRfid ur = userRfidService.findById(userRfid.getUserRfidId());
+
+        ur.setActive(userRfid.getActive());
+
+        ur.getRfid().setTag0(userRfid.getRfid().getTag0());
+        ur.getRfid().setTag1(userRfid.getRfid().getTag1());
+        ur.getRfid().setTag2(userRfid.getRfid().getTag2());
+        ur.getRfid().setTag3(userRfid.getRfid().getTag3());
+        ur.getRfid().setPin(userRfid.getRfid().getPin());
+
+        return gson.toJson(userRfidService.save(ur));
     }
 }
