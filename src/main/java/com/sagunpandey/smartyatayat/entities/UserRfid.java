@@ -18,7 +18,7 @@ public class UserRfid {
     @JoinColumn(name = "user_info_id", nullable = false)
     private UserInfo userInfo;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "rfid_id", nullable = false)
     private Rfid rfid;
 

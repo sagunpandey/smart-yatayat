@@ -81,7 +81,7 @@ public class UserInfo {
     }
 
     public void setPassword(String password) {
-        this.password = PASSWORD_ENCODER.encode(password);
+        this.password = password;
     }
 
     public Long getPhone() {
@@ -114,5 +114,13 @@ public class UserInfo {
 
     public void setBalance(Integer balance) {
         this.balance = balance;
+    }
+
+    public List<UserRfid> getUserRfids() {
+        return userRfids;
+    }
+
+    public void setUserRfids(List<UserRfid> userRfids) {
+        this.userRfids = userRfids;
     }
 }
