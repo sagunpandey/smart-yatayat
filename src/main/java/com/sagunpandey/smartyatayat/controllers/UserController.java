@@ -146,7 +146,7 @@ public class UserController {
             throw new BadRequestException("Invalid request");
         }
 
-        userRfid.setActive(0);
+        userRfid.setActive(1);
 
         userRfid = userRfidService.save(userRfid);
 
