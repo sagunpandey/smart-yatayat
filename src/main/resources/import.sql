@@ -15,7 +15,7 @@ VALUES
 ('BA66Pa4983', 35, 5),
 ('BA66Pa4984', 30, 5),
 ('BA66Pa4985', 35, 10),
-('BA66Pa4986', 25, 0);
+('BA66Pa4986', 25, 0)
 
 INSERT INTO checkpoint_info (checkpoint_name, longitude, latitude)
 VALUES
@@ -28,6 +28,9 @@ VALUES
 
 INSERT INTO user_info (email, first_name, last_name, password, role, balance)
 VALUES ('sag.pan@gmail.com', 'Sagun', 'Pandey', '$2a$10$hSZPkOaff5Z0HxE17ZNiCOX7FSCGG.X7gM5xHduTC5qDJFA/vemXy', 2, 0);
+
+INSERT INTO user_info (email, first_name, last_name, password, role, balance)
+VALUES ('shital.leon@gmail.com', 'Shital', 'Pandey', '$2a$10$hSZPkOaff5Z0HxE17ZNiCOX7FSCGG.X7gM5xHduTC5qDJFA/vemXy', 1, 1000);
 
 INSERT INTO rfid (tag0, tag1, tag2, tag3, pin)
 VALUES
