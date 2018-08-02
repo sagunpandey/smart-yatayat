@@ -25,7 +25,7 @@ public class BusLogServiceImpl implements BusLogService {
 
     @Override
     public BusLog findLatestLogForExitEvent(Long busId) {
-        return repository.findFirstByBus_BusIdAndEntryTypeOrderByBusLogIdDesc(busId, 1);
+        return repository.findFirstByBus_BusIdAndEntryTypeOrderByBusLogIdDesc(busId, 0);
     }
 
     @Override
